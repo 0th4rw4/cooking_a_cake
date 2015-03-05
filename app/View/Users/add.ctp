@@ -1,5 +1,5 @@
 <div class="users form">
-	<h2>  Usuario Logeado: <?php echo $username ? $username : __('Ninguno'); ?>  </h2>
+	<h2>  Usuario Logeado: <?php echo isset($username) ? $username : __('Ninguno'); ?>  </h2>
 <?php echo $this->Form->create('User'); ?>
     <fieldset>
         <legend><?php echo __('Add User'); ?></legend>
@@ -8,7 +8,7 @@
         echo $this->Form->input('role', array(
             'options' => array('admin' => 'Admin', 'author' => 'Author')
         ));
-        $mt_client_id = $mt_client_id ? $mt_client_id : null;
+        $mt_client_id = isset($mt_client_id) ? $mt_client_id : null;
         echo $this->Form->hidden( 'mt_client_id', array( 'value' => $mt_client_id ) );
 
     ?>

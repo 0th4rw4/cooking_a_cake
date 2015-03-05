@@ -37,10 +37,12 @@ class UsersController extends AppController {
 
     public function add() {
         if ( $this->Auth->login() ) {
+            $this->User->Behaviors->enable('MtClient');
             $this->set('username', $this->Auth->user('username') );
             $this->set('mt_client_id', $this->Auth->user('mt_client_id') );
-            debug( $this->Auth->user('mt_client_id') );
         }
+        else
+            $this->User->Behaviors->disable('MtClient');
 
         if ($this->request->is('post')) {
             $this->User->create();

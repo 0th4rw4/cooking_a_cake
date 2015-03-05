@@ -56,7 +56,7 @@ class AppController extends Controller {
             // definir una constante... estas variables no pueden redefinidas dentro del script
             define('MT_CLIENT_ID', $this->Auth->user('mt_client_id') );
         }
-
+        debug( $this->Auth->user() ); 
         /*
         if(defined('MT_CLIENT_ID')) ......
         $this->Post->find('all', array(

@@ -3,6 +3,7 @@ App::uses('AuthComponent', 'Controller/Component');
 
 class User extends AppModel {
     public $belongsTo = 'MtClient';
+    //public $actsAs = array('MtClient');
 
     public $validate = array(
         'username' => array(
@@ -26,8 +27,8 @@ class User extends AppModel {
         )
     );
 
-    public function beforeSave($options = array()) {
-        if( $this->data['User']['mt_client_id'] == null ){
+    public function beforeSave($options = array() ){
+        if( is_null( $this->data['User']['mt_client_id'] ) ){
             $this->MtClient->save( array( 'name' =>  $this->data['User']['username'] ) );
             $this->data['User']['mt_client_id'] = $this->MtClient->id;
         }
