@@ -7,16 +7,27 @@ class PostsController extends AppController {
         $this->set('posts', $this->Post->find( 'all' ) );
     }
 
-    public function view($id) {
+    public function view($id){
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));
         }
 
         $post = $this->Post->findById($id);
-        if (!$post) {
+
+        if (!$post){
             throw new NotFoundException(__('Invalid post'));
         }
+
         $this->set('post', $post);
+        $this->set('user_id',$this->Auth->user('id'));
+    }
+
+    public function add_comment(){
+    	if($this->request->is('post') ){
+        	$this->Post->Comment->save( $this->request->data );
+        }
+
+    	return $this->redirect($this->referer());
     }
 
     public function add() {
@@ -25,7 +36,7 @@ class PostsController extends AppController {
 	    if ($this->request->is('post') ) {
 	        //Added this line
 	        $this->request->data['Post']['user_id'] = $this->Auth->user('id');
-	        if ($this->Post->save($this->request->data)) {
+	        if( $this->Post->save($this->request->data )) {
 	            $this->Session->setFlash(__('Your post has been saved.'));
 	            return $this->redirect(array('action' => 'index'));
 	        }

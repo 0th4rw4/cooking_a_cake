@@ -5,6 +5,13 @@ class User extends AppModel {
     public $belongsTo = 'MtClient';
     //public $actsAs = array('MtClient');
 
+    public $hasMany = array(
+        'Comment' => array( 
+            'className' => 'Comments.Comment',
+            'foreignKey' => 'user_id'
+        ) 
+    );
+
     public $validate = array(
         'username' => array(
             'required' => array(
