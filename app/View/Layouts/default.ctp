@@ -29,13 +29,22 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
+		echo $this->Html->script('angular-1.2.15/angular');
+		echo $this->Html->script('angular-1.2.15/angular-resource');
+		echo $this->Html->script('angular-1.2.15/angular-route');
+
+		echo $this->Html->script('app');
+		echo $this->Html->script('controllers');
+		echo $this->Html->script('services');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
+
+
 	?>
 </head>
-<body>
+<body ng-app="commentsApp">
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
