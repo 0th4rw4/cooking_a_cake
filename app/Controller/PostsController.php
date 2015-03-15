@@ -22,12 +22,17 @@ class PostsController extends AppController {
         $this->set('user_id',$this->Auth->user('id'));
     }
 
-    public function add_comment(){
+    public function add_comment($id){
     	if($this->request->is('post') ){
         	$this->Post->Comment->save( $this->request->data );
+        	$this->set('data', $this->request->data );
+        }
+        else {
+        	$this->set('data', $this->Post->Comment->findByPostId( $id ) );
         }
 
-    	return $this->redirect($this->referer());
+    	$this->layout = 'ajax';
+		$this->render('/Layouts/ajax');
     }
 
     public function add() {

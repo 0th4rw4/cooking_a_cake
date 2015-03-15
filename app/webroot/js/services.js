@@ -2,15 +2,25 @@
 
 /* Services */
 
-var commentsSevices = angular.module('commentsSevices', ['ngResource'] );
+var commentsServices = angular.module('commentsServices', ['ngResource'] );
 
-commentsSevices.factory('CommentModule', ['$resource', function($resource){
-	return $resource('/posts/add_comment', {},{
-		add: {method:'POST', params:{ 
-			Comment:{
-				user_id:null,
-				comment:null,
-				post_id:null
-		}}, isArray:true}
+commentsServices.factory('CommentModule', ['$resource', function($resource){
+	return $resource('/posts/add_comment/:id', {id: '@Comment.post_id'},{
+		find: {
+				method: 'GET',
+				isArray: true
+		},
+		read: {
+				method: 'GET',
+				isArray: false
+		},
+		save: {
+				method: 'POST',
+				isArray: false
+		},
+		remove: {
+				method: 'DELETE',
+				isArray: false
+		}
 	});
 }]);

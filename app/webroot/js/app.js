@@ -3,8 +3,7 @@
 /* App Module */
 
 var commentsApp = angular.module('commentsApp', [
-	'ngRoute',
-  'commentsControllers',
-  'commentsServices'
+  'commentsServices', 
+  'commentsControllers'
 ]);
 
