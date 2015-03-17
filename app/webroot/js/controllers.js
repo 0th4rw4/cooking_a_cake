@@ -4,26 +4,45 @@
 
 var commentsControllers = angular.module('commentsControllers', []);
 
-commentsControllers.controller('CommentCtrl', ['$scope', 'CommentModule', function($scope, CommentModule){
+commentsControllers.controller('CommentCtrl', ['$scope', 'CommentModule', '$http', function($scope, CommentModule, $http){
   $scope.comments = [];
   
-  Comment.find({ id: $scope.post_id} ,function(response){
-      $scope.comments = response;
+  $http.get('/posts/add_comment/18.json').success(function(response){
+      console.log(response);
+      $scope.title = response.recipes.Post.title;
+      $scope.body = response.recipes.Post.body;
+      $scope.created = response.recipes.Post.created;
+      $scope.post_id = response.recipes.Post.id;
+
+      $scope.comments = response.recipes.Comment;
+      console.log($scope.comments);
+      //$scope.user_id = response.recipes.user_logged;
+  });
+  // ## Version para usar con Services
+  /*CommentModule.find({ id: '18' } ,function(response){
+      console.log(response);
+
+      $scope.title = response.recipes.Post.title;
+      $scope.body = response.recipes.Post.body;
+      $scope.created = response.recipes.Post.created;
+      $scope.post_id = response.recipes.Post.id;
+
+      $scope.comments = response.recipes.Comment;
       
-    });
-
-  //$scope.ListComments = CommentModule.get({id:$scope.post_id});
-
+      
+    });*/
 
   $scope.newComment = {
       "Comment": {
-        comment: $scope.comment,
-        user_id: $scope.user_id,
-        post_id: $scope.post_id //esto lo sacás de otro lado... .... 
+        comment: $scope.textComment,
+        post_id: $scope.post_id 
       }
     };
 
   $scope.save = function() {
+      $http.post('/posts/add_comment',newComment).success(function(response){
+        $scope.comments.Comment = response.Comment;
+      });
       /** 
        * newComment podría ser: 
        * {"Comment": {
@@ -31,10 +50,12 @@ commentsControllers.controller('CommentCtrl', ['$scope', 'CommentModule', functi
        *  post_id: 453,
        *  comment: "este post me gusta =) "
        * }}
-       */
-      Comment.save($scope.newComment, function(response){
+       *
+
+      CommentModule.save($scope.newComment, function(response){
         $scope.comments.Comment = response.Comment;
         //lo que quieras hacer con la respuesta del server... 
       });
+      */
     };
 }]);

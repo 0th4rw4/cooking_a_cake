@@ -5,7 +5,7 @@
 var commentsServices = angular.module('commentsServices', ['ngResource'] );
 
 commentsServices.factory('CommentModule', ['$resource', function($resource){
-	return $resource('/posts/add_comment/:id', {id: '@Comment.post_id'},{
+	return $resource('/posts/:id.json', {id: '@recipes.Post.id'},{
 		find: {
 				method: 'GET',
 				isArray: true

@@ -1,13 +1,13 @@
 <?php
 class PostsController extends AppController {
     public $helpers = array('Html', 'Form', 'Session');
-    public $components = array('Session');
+    public $components = array('Session', 'RequestHandler');
 
-    public function index(){
+    public function index(){ //View/Posts/index.ctp
         $this->set('posts', $this->Post->find( 'all' ) );
     }
 
-    public function view($id){
+    public function view($id){ //Received call from AngularJS
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));
         }
@@ -18,11 +18,36 @@ class PostsController extends AppController {
             throw new NotFoundException(__('Invalid post'));
         }
 
-        $this->set('post', $post);
-        $this->set('user_id',$this->Auth->user('id'));
+        //$this->set('post', $post);
+        //$post["user_logged"] = $this->Auth->user('id');
+
+        $this->set(array(
+            'recipes' => $post,
+            '_serialize' => array('recipes')
+		));
     }
 
-    public function add_comment($id){
+    public function add_comment($id){ //Received call from AngularJS
+    	if($this->request->is('post') ){
+        	$this->Post->Comment->save( $this->request->data );
+        	$data = $this->request->data;
+        }
+        else {
+        	$data = $this->Post->Comment->findByPostId( $id );
+        }
+		$this->set(array(
+            'recipes' => $data,
+            '_serialize' => array('recipes')
+		));
+
+        //$this->set('recipes', array($data));
+        
+        //RequestHandlerComponent::renderAs('add_comment', 'json');
+    	//$this->layout = 'ajax';
+		//$this->render('/Layouts/ajax');
+    }
+
+    public function old_add_comment($id){
     	if($this->request->is('post') ){
         	$this->Post->Comment->save( $this->request->data );
         	$this->set('data', $this->request->data );
@@ -35,7 +60,7 @@ class PostsController extends AppController {
 		$this->render('/Layouts/ajax');
     }
 
-    public function add() {
+    public function add() { // View/Posts/add.ctp
     	$this->set( 'client', MT_CLIENT_ID );
     	
 	    if ($this->request->is('post') ) {
@@ -48,7 +73,7 @@ class PostsController extends AppController {
 	    }
 	}
 
-    public function edit($id = null) {
+    public function edit($id = null) { // View/Posts/edit.ctp
 	    if (!$id) {
 	        throw new NotFoundException(__('Invalid post'));
 	    }
