@@ -2,8 +2,8 @@
 
 /* App Module */
 
-var commentsApp = angular.module('commentsApp', [
-  'commentsServices', 
-  'commentsControllers'
+var postsApp = angular.module('postsApp', [
+  'postsServices', 
+  'postsControllers'
 ]);
 

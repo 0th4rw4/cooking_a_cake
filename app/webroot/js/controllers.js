@@ -2,60 +2,45 @@
 
 /* Controllers */
 
-var commentsControllers = angular.module('commentsControllers', []);
+var postsControllers = angular.module('postsControllers', [] );
 
-commentsControllers.controller('CommentCtrl', ['$scope', 'CommentModule', '$http', function($scope, CommentModule, $http){
-  $scope.comments = [];
-  
-  $http.get('/posts/add_comment/18.json').success(function(response){
-      console.log(response);
-      $scope.title = response.recipes.Post.title;
-      $scope.body = response.recipes.Post.body;
-      $scope.created = response.recipes.Post.created;
-      $scope.post_id = response.recipes.Post.id;
+postsControllers.controller('postsCtl', ['$scope', 'Post', 'Comment', 
+  function($scope, Post, Comment){
+    $scope.post = {};
 
-      $scope.comments = response.recipes.Comment;
-      console.log($scope.comments);
-      //$scope.user_id = response.recipes.user_logged;
-  });
-  // ## Version para usar con Services
-  /*CommentModule.find({ id: '18' } ,function(response){
-      console.log(response);
-
-      $scope.title = response.recipes.Post.title;
-      $scope.body = response.recipes.Post.body;
-      $scope.created = response.recipes.Post.created;
-      $scope.post_id = response.recipes.Post.id;
-
-      $scope.comments = response.recipes.Comment;
-      
-      
-    });*/
-
-  $scope.newComment = {
-      "Comment": {
-        comment: $scope.textComment,
-        post_id: $scope.post_id 
-      }
-    };
-
-  $scope.save = function() {
-      $http.post('/posts/add_comment',newComment).success(function(response){
-        $scope.comments.Comment = response.Comment;
+    $scope.getData = function() {
+      Post.read({ id:1 }, function(response){
+        $scope.post = response;
       });
-      /** 
-       * newComment podría ser: 
-       * {"Comment": {
-       *  id: 234, // el servise usa ESTO para pasrale como :id a la URL
-       *  post_id: 453,
-       *  comment: "este post me gusta =) "
-       * }}
-       *
-
-      CommentModule.save($scope.newComment, function(response){
-        $scope.comments.Comment = response.Comment;
-        //lo que quieras hacer con la respuesta del server... 
-      });
-      */
     };
+    $scope.getData();
+
+    $scope.save = function(){
+      var data = {
+        Comment:{
+          comment: $scope.commentContent,
+          post_id: $scope.post.Post.id,
+          user_id: "1"
+        }
+      };
+
+      Comment.save(data).$promise
+        .then(function(response) { // si responde 200
+          $scope.getData();
+        })
+        .catch(function(response) { // si responde cualquier otra cosa 
+          alert(response.data);
+        });
+
+      // Comment.save(data, function(response){
+      //   $scope.getData();
+      // });
+    }
+
+    $scope.remove = function(id){
+      var data = {id:id};
+      Comment.remove(data, function(response){
+        $scope.getData();
+      });
+    }
 }]);

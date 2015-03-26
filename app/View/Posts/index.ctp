@@ -1,48 +1,19 @@
-<!-- File: /app/View/Posts/index.ctp -->
-
-<h1>Blog posts</h1>
-<p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>MT_CLIENT_ID</th>
-        <th>Title</th>
-        <th>Actions</th>
-        <th>Created</th>
-    </tr>
-
-<!-- Here's where we loop through our $posts array, printing out post info -->
-
-    <?php foreach ($posts as $post): ?>
-    <tr>
-        <td><?php echo $post['Post']['id']; ?></td>
-        <td><?php echo $post['Post']['mt_client_id']; ?></td>
-        <td>
-            <?php
-                echo $this->Html->link(
-                    $post['Post']['title'],
-                    array('action' => 'view', $post['Post']['id'])
-                );
-            ?>
-        </td>
-        <td>
-            <?php
-                echo $this->Form->postLink(
-                    'Delete',
-                    array('action' => 'delete', $post['Post']['id']),
-                    array('confirm' => 'Are you sure?')
-                );
-            ?>
-            <?php
-                echo $this->Html->link(
-                    'Edit', array('action' => 'edit', $post['Post']['id'])
-                );
-            ?>
-        </td>
-        <td>
-            <?php echo $post['Post']['created']; ?>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-
-</table>
+<div ng-controller="postsCtl">
+	<div>
+		<h2>{{post.Post.title}}</h2>
+		<p>{{post.Post.body}}</p>
+	</div>
+	<ul>
+		<li ng-repeat="comment in post.Comment">
+			<p>User: {{comment.user_id}}</p>
+			<p>Comment:  {{comment.comment}}</p>
+			<button ng-click="remove(comment.id)">Rmv</button>
+		</li>
+	</ul>
+	<div>
+		<p>Inserte un comentario</p>
+		<textarea ng-model="commentContent">
+		</textarea>
+		<button ng-click="save()">Agregar</button>
+	</div>
+</div>

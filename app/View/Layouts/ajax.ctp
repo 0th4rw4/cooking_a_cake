@@ -14,8 +14,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$xml = Xml::fromArray(array('response' => $recipes));
-echo $xml->asJSON();
+//$xml = Xml::fromArray(array('response' => $recipes));
+//echo $xml->asJSON(); 
+echo json_encode($data);
 
-?>
-<?php //echo json_encode( $data ); ?>
+

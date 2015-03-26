@@ -2,25 +2,48 @@
 
 /* Services */
 
-var commentsServices = angular.module('commentsServices', ['ngResource'] );
+var postsServices = angular.module('postsServices', ['ngResource'] );
 
-commentsServices.factory('CommentModule', ['$resource', function($resource){
-	return $resource('/posts/:id.json', {id: '@recipes.Post.id'},{
-		find: {
-				method: 'GET',
-				isArray: true
-		},
-		read: {
-				method: 'GET',
-				isArray: false
-		},
-		save: {
-				method: 'POST',
-				isArray: false
-		},
-		remove: {
-				method: 'DELETE',
-				isArray: false
-		}
-	});
+postsServices.factory('Post', ['$resource', 
+	function($resource){
+		return $resource('/api/posts/:id', {id: '@id'},{
+			find: {
+					method: 'GET',
+					isArray: true
+			},
+			read: {
+					method: 'GET',
+					isArray: false
+			},
+			save: {
+					method: 'POST',
+					isArray: false
+			},
+			remove: {
+					method: 'DELETE',
+					isArray: false
+			}
+		});
+}]);
+
+postsServices.factory('Comment', ['$resource', 
+	function($resource){
+		return $resource('/api/comments/:id', {id: '@id'},{
+			find: {
+					method: 'GET',
+					isArray: true
+			},
+			read: {
+					method: 'GET',
+					isArray: false
+			},
+			save: {
+					method: 'POST',
+					isArray: false
+			},
+			remove: {
+					method: 'DELETE',
+					isArray: false
+			}
+		});
 }]);

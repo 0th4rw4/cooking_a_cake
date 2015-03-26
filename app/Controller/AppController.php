@@ -32,64 +32,23 @@ App::uses('Controller', 'Controller');
  */
 
 class AppController extends Controller {
-	public $components = array(
-        'Session',
-        'Auth' => array(
-            'loginRedirect' => array('controller' => 'posts', 'action' => 'index'),
-            'logoutRedirect' => array(
-                'controller' => 'posts',
-                'action' => 'index'
-            ),
-            'authenticate' => array(
-                'Form' 
-            ),
-            'authorize' => array('Controller') // Added this line
-        )
-    );
-    public $helpers = array('Html', 'Form', 'Session');
-
+   // public $helpers = array('Html', 'Form', 'Session');
+    public $components = array('RequestHandler');
+    
     //Se ejecuta antes de cualquier accion de un controlador
     public function beforeFilter() {
-        // Este asunto de definir las constantes es para poder usarlas indiferentemente en cualquier parte dentro del sistema (views, controllers, models, etc)
-
-        if( ! is_null( $this->Auth->user('id') ) ) {
-            // definir una constante... estas variables no pueden redefinidas dentro del script
-            define('MT_CLIENT_ID', $this->Auth->user('mt_client_id') );
-        }
-        /*
-        if(defined('MT_CLIENT_ID')) ......
-        $this->Post->find('all', array(
-            'conditions'    => [
-                'Post.mt_client_id' => MT_CLIENT_ID,
-            ] 
-        ));
-
-        MT_CLIENT_ID = ___ NO EXISTE
-        */
-
-        //Configure AuthComponent
-        $this->Auth->loginAction = array(
-          'controller' => 'users',
-          'action' => 'login'
-        );
-        $this->Auth->logoutRedirect = array(
-          'controller' => 'users',
-          'action' => 'login'
-        );
-        $this->Auth->loginRedirect = array(
-          'controller' => 'posts',
-          'action' => 'add'
-        );
+       define('MT_CLIENT_ID', 30 );
     }   
 
-    public function isAuthorized($user) {
-        // Admin can access every action
-        if (isset($user['role']) && $user['role'] === 'admin') {
-            return true;
-        }
-
-        // Default deny
-        return false;
+    public function automagia($data){
+    	$this->autoRender = false; 
+        return json_encode($data);
+    }
+    public function debug($bug){
+    	echo '<pre>';
+        var_dump($bug); 
+        echo '</pre>'; 
+        die();
     }
 }
 

@@ -25,10 +25,16 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'posts', 'action' => 'index'));
-/**
- * ...and connect the rest of 'Pages' controller's URLs.
- */
-	Router::connect('/pages/*', array('controller' => 'posts', 'action' => 'display'));
+
+	Router::mapResources('posts',[
+		'prefix' =>'/api/',
+		'controller' => 'posts'
+	]);
+	Router::mapResources('comments',[
+		'prefix' =>'/api/',
+		'controller' => 'comments'
+	]);
+	Router::parseExtensions();
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
@@ -41,6 +47,3 @@
  * the built-in default routes.
  */
 	require CAKE . 'Config' . DS . 'routes.php';
-
-Router::mapResources('recipes');
-Router::parseExtensions();
