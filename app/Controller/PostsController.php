@@ -1,26 +1,28 @@
 <?php
 class PostsController extends AppController {
     public function index(){
-        $magia = $this->Post->find('all');
-        //return $this->automagia($magia);
-        //$this->debug($magia);
+        $response = $this->Post->find('all');
     }
     public function find(){
-        $magia = $this->Post->find('all');
-        return $this->automagia($magia); 
+        $response['statusCode'] = ( $response = $this->Post->find('all') )
+            ? 200
+            : 400;
+        return $this->automagia( $response );
     }
     public function read($id){
-        $magia = $this->Post->findById($id);
-        return $this->automagia($magia);
+        $response['statusCode'] = ( $response = $this->Post->findById($id) )
+            ? 200
+            : 400;
+        return $this->automagia( $response );
     }
     public function create(){
-        
+        $this->autoRender = false; 
     }
     public function update($id){
-        
+        $this->autoRender = false; 
     }
     public function delete($id){
-        
+        $this->autoRender = false; 
     }
 
 }

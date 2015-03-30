@@ -41,6 +41,15 @@ class AppController extends Controller {
     }   
 
     public function automagia($data){
+        // $data -> is $response
+
+        if( !empty( $data['statusCode'] ) ){
+            $this->RequestHandler->response->statusCode( $data['statusCode'] );
+            $data['statusMess'] = ( $data['statusCode'] == 200 ) 
+                ? 'Proceso exitoso'
+                : 'Ocurrio un error';
+        }
+
     	$this->autoRender = false; 
         return json_encode($data);
     }

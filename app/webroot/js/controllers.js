@@ -23,13 +23,12 @@ postsControllers.controller('postsCtl', ['$scope', 'Post', 'Comment',
           user_id: "1"
         }
       };
-
       Comment.save(data).$promise
         .then(function(response) { // si responde 200
           $scope.getData();
         })
         .catch(function(response) { // si responde cualquier otra cosa 
-          alert(response.data);
+          alert(response.data.statusMess);
         });
 
       // Comment.save(data, function(response){

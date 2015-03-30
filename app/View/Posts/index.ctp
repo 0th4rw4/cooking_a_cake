@@ -5,15 +5,14 @@
 	</div>
 	<ul>
 		<li ng-repeat="comment in post.Comment">
-			<p>User: {{comment.user_id}}</p>
-			<p>Comment:  {{comment.comment}}</p>
-			<button ng-click="remove(comment.id)">Rmv</button>
+			<p>User Id: {{comment.user_id}}</p>
+			<p>Comment:  {{comment.comment}} <input type="submit" ng-click="remove(comment.id)" value="X"/> </p>
+			
 		</li>
 	</ul>
 	<div>
 		<p>Inserte un comentario</p>
-		<textarea ng-model="commentContent">
-		</textarea>
+		<textarea ng-model="commentContent"></textarea>
 		<button ng-click="save()">Agregar</button>
 	</div>
 </div>
